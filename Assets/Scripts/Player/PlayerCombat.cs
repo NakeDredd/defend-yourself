@@ -7,7 +7,9 @@ using UnityEngine;
 public class PlayerCombat : MonoBehaviour
 {
     [SerializeField] private int damage;
-    [SerializeField] private float cooldown;
+    [SerializeField] private LayerMask attackLayermask;
+    [SerializeField] private Transform attackPoint;
+    [SerializeField] private float attackRadius;    
 
     private Animator anim;
     private PlayerMovement movement;
@@ -31,6 +33,8 @@ public class PlayerCombat : MonoBehaviour
                 Attack();
 
                 isCanAttack = false;
+
+                
                 float attackLength = anim.GetCurrentAnimatorStateInfo(0).length;
                 Observable.Timer(TimeSpan.FromSeconds(attackLength+0.1)).Subscribe(_ =>
                 {
@@ -45,5 +49,12 @@ public class PlayerCombat : MonoBehaviour
     {
         anim.SetTrigger("Attack");
         OnAttack.Invoke();
+        Debug.Log("test");
+        Collider2D[] hits = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, attackLayermask.value);
+        foreach (var hit in hits)
+        {
+            IDamagable obj = hit.GetComponent<IDamagable>();
+            obj.ApplyDamage(damage);
+        }
     }
 }
