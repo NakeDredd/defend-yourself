@@ -6,18 +6,6 @@ public interface IDamagable
 {
     public int MaxHealth { get;}
     public int CurrentHealth { get; set; }
-
-    public virtual void ApplyDamage(int damage)
-    {
-        if (CurrentHealth - damage <= 0)
-        {
-            Death();
-        }else
-        {
-            CurrentHealth -= damage;
-        }
-
-    }
-
+    public abstract void ApplyDamage(int damage);
     public abstract void Death();
 }

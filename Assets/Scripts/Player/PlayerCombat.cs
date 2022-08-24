@@ -47,7 +47,7 @@ public class PlayerCombat : MonoBehaviour
 
     private void Attack()
     {
-        anim.SetTrigger("Attack");
+        anim.SetTrigger("FirstAttack");
         OnAttack.Invoke();
     }
 

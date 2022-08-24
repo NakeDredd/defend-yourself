@@ -105,12 +105,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void SlowPlayer()
     {
-        int oldSpeed = speed;
-        int newSpeed = speed / 2;
-        speed = newSpeed;
-        Observable.Timer(TimeSpan.FromSeconds(0.5f)).Subscribe(_ =>
+        speed = 100;
+        Observable.Timer(TimeSpan.FromSeconds(0.2f)).Subscribe(_ =>
         {
-            speed = oldSpeed;
+            speed = 200;
         });
     }
 }
