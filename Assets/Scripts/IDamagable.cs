@@ -19,10 +19,5 @@ public interface IDamagable
 
     }
 
-    private void SetHP()
-    {
-        CurrentHealth = MaxHealth;
-    }
-
     public abstract void Death();
 }
