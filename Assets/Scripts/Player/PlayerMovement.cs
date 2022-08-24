@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
+using System.Security.Cryptography;
+using System;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -13,22 +15,29 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask groundCheck;
 
     private Rigidbody2D rb;
+    private Animator anim;
 
     private float moveInput;
     private float coyoteTimeCounter;
 
-    public float MoveInput { get => moveInput;}
-
-    public delegate void PlayerAnimationsCallback(PlayerAnimState newState);
-    public static event PlayerAnimationsCallback ChangeAnim;
-
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
+
+        PlayerCombat.OnAttack += SlowPlayer;
+    }
+
+    private void OnDisable()
+    {
+        PlayerCombat.OnAttack -= SlowPlayer;
     }
 
     private void FixedUpdate()
     {
+        //Animtions
+        anim.SetFloat("yVelocity", rb.velocity.y);
+        //Animtions
         Move();
 
         if (IsGrounded())
@@ -55,6 +64,9 @@ public class PlayerMovement : MonoBehaviour
     private void Move()
     {
         moveInput = Input.GetAxis("Horizontal") * speed;
+        //Animtions
+        anim.SetBool("isMove", moveInput != 0);
+        //Animtions
         Vector2 moveVector = new Vector2(moveInput * Time.fixedDeltaTime, rb.velocity.y);
         rb.velocity = moveVector;
         if (moveInput > 0)
@@ -69,8 +81,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump(bool isCoyote)
     {
-        ChangeAnim(PlayerAnimState.Jump);
-
+        //Animtions
+        anim.SetTrigger("Jump");
+        //Animtions
         if (isCoyote)
         {
             Vector2 jumpVector2 = new Vector2(rb.velocity.x, jumpForce);
@@ -81,8 +94,22 @@ public class PlayerMovement : MonoBehaviour
         }
     }
     
-    private bool IsGrounded()
+    public bool IsGrounded()
     {
-        return Physics2D.Raycast(transform.position, Vector2.down, characterHeight, groundCheck.value).collider != null; 
+        bool isGrounded = Physics2D.Raycast(transform.position, Vector2.down, characterHeight, groundCheck.value).collider != null;
+        //Animtions
+        anim.SetBool("isGrounded", isGrounded);
+        //Animtions
+        return isGrounded; 
+    }
+
+    private void SlowPlayer()
+    {
+        int oldSpeed = speed;
+        speed /= 2;
+        Observable.Timer(TimeSpan.FromSeconds(0.5f)).Subscribe(_ =>
+        {
+            speed = oldSpeed;
+        });
     }
 }
