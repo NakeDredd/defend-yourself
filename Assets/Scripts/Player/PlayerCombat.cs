@@ -49,7 +49,10 @@ public class PlayerCombat : MonoBehaviour
     {
         anim.SetTrigger("Attack");
         OnAttack.Invoke();
+    }
 
+    private void ApplyDamage()
+    {
         Collider2D[] hits = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, attackLayermask.value);
         foreach (var hit in hits)
         {
