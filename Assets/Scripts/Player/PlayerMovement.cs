@@ -11,12 +11,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private int jumpForce;
     [SerializeField] private float characterHeight;
     [SerializeField] private float coyoteTime;
+    [SerializeField] private int horizontalSlowForce;
 
     [SerializeField] private LayerMask groundCheck;
 
     private Rigidbody2D rb;
     private Animator anim;
     private int currentSpeed;
+    private float gravityConst;
 
     private float moveInput;
     private float coyoteTimeCounter;
@@ -26,13 +28,14 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
 
-        PlayerCombat.OnAttack += SlowPlayer;
+        PlayerCombat.OnAttack += ApplySlowPlayer;
         currentSpeed = speed;
+        gravityConst = rb.gravityScale;
     }
 
     private void OnDisable()
     {
-        PlayerCombat.OnAttack -= SlowPlayer;
+        PlayerCombat.OnAttack -= ApplySlowPlayer;
     }
 
     private void FixedUpdate()
@@ -105,12 +108,34 @@ public class PlayerMovement : MonoBehaviour
         return isGrounded; 
     }
 
-    private void SlowPlayer()
+    private void ApplySlowPlayer()
+    {
+        if (IsGrounded())
+        {
+            SlowPlayerHorizontal();
+        }
+        else
+        {
+            SlowPlayerVetrical();
+        }
+    }
+
+    private void SlowPlayerHorizontal()
     {
         currentSpeed = 100;
         Observable.Timer(TimeSpan.FromSeconds(0.2f)).Subscribe(_ =>
         {
             currentSpeed = speed;
+        });
+    }
+
+    private void SlowPlayerVetrical()
+    {
+        rb.gravityScale = 0;
+        rb.AddForce(new Vector2(0, horizontalSlowForce), ForceMode2D.Force);
+        Observable.Timer(TimeSpan.FromSeconds(0.2f)).Subscribe(_ =>
+        {
+            rb.gravityScale = gravityConst;
         });
     }
 }

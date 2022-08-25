@@ -29,11 +29,11 @@ public class EnemyMovement : MonoBehaviour
         {
             if (leftZone)
             {
-                moveVector = new Vector2(-1, rb.velocity.y * speed * Time.fixedDeltaTime);
+                moveVector = new Vector2(-1 * speed * Time.fixedDeltaTime, rb.velocity.y);
             }
             else if (rightZone)
             {
-                moveVector = new Vector2(1, rb.velocity.y * speed * Time.fixedDeltaTime);
+                moveVector = new Vector2(1 * speed * Time.fixedDeltaTime, rb.velocity.y);
             }
             rb.velocity = moveVector;
             if (rightZone || leftZone)
