@@ -24,7 +24,7 @@ public class EnemyHP : MonoBehaviour, IDamagable
 
     public void ApplyDamage(int damage)
     {
-        if (CurrentHealth - damage <= 0 && this.GetComponent<EnemyMovement>().dead == false)
+        if (CurrentHealth - damage <= 0 && this.GetComponent<EnemyAI>().dead == false)
         {
             Death();
         }
@@ -38,7 +38,7 @@ public class EnemyHP : MonoBehaviour, IDamagable
 
     public void Death()
     {
-        this.GetComponent<EnemyMovement>().dead = true;
+        this.GetComponent<EnemyAI>().dead = true;
         anim.SetTrigger("Dead");
 
         Observable.Timer(TimeSpan.FromSeconds(afterDeathTime)).Subscribe(_ => 
