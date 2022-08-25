@@ -29,13 +29,13 @@ public class EnemyMovement : MonoBehaviour
         {
             if (leftZone)
             {
-                moveVector = new Vector2(-1, rb.velocity.y);
+                moveVector = new Vector2(-1, rb.velocity.y * speed * Time.fixedDeltaTime);
             }
             else if (rightZone)
             {
-                moveVector = new Vector2(1, rb.velocity.y);
+                moveVector = new Vector2(1, rb.velocity.y * speed * Time.fixedDeltaTime);
             }
-            rb.velocity = moveVector * speed * Time.fixedDeltaTime;
+            rb.velocity = moveVector;
             if (rightZone || leftZone)
             {
                 anim.SetBool("Walk", true);

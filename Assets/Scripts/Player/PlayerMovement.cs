@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody2D rb;
     private Animator anim;
+    private int currentSpeed;
 
     private float moveInput;
     private float coyoteTimeCounter;
@@ -26,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
         anim = GetComponent<Animator>();
 
         PlayerCombat.OnAttack += SlowPlayer;
+        currentSpeed = speed;
     }
 
     private void OnDisable()
@@ -63,7 +65,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move()
     {
-        moveInput = Input.GetAxis("Horizontal") * speed;
+        moveInput = Input.GetAxis("Horizontal") * currentSpeed;
         //Animtions
         anim.SetBool("isMove", moveInput != 0);
         //Animtions
@@ -105,10 +107,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void SlowPlayer()
     {
-        speed = 100;
+        currentSpeed = 100;
         Observable.Timer(TimeSpan.FromSeconds(0.2f)).Subscribe(_ =>
         {
-            speed = 200;
+            currentSpeed = speed;
         });
     }
 }
