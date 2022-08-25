@@ -4,7 +4,7 @@ using UnityEngine;
 using UniRx;
 using System;
 
-public class Enemy : MonoBehaviour, IDamagable
+public class EnemyHP : MonoBehaviour, IDamagable
 {
     [SerializeField] private int maxHealth;
     [SerializeField] private float afterDeathTime;
@@ -38,8 +38,9 @@ public class Enemy : MonoBehaviour, IDamagable
 
     public void Death()
     {
-        anim.SetTrigger("Death");
-        this.GetComponent<Collider2D>().enabled = false;
+        this.GetComponent<EnemyMovement>().dead = true;
+        anim.SetTrigger("Dead");
+
         Observable.Timer(TimeSpan.FromSeconds(afterDeathTime)).Subscribe(_ => 
         { 
             Destroy(this.gameObject);
