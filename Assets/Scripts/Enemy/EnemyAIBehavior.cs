@@ -10,6 +10,9 @@ public class EnemyAIBehavior : MonoBehaviour, IDamagable
 {
     [SerializeField] private float nextWaypointDistance;
 
+    [SerializeField] private Transform attackPoint;
+    [SerializeField] private LayerMask attackLayerMask;
+
     private Path path;
     private EnemyAIVariables variables;
     private Seeker seeker;
@@ -48,6 +51,7 @@ public class EnemyAIBehavior : MonoBehaviour, IDamagable
         }
     }
 
+    #region Pathfinding and Moving
     public void UpdatePath()
     {
         if (seeker.IsDone())
@@ -110,17 +114,15 @@ public class EnemyAIBehavior : MonoBehaviour, IDamagable
 
         rb.AddForce(force);
     }
+    #endregion
 
+    #region HP
     public void DamagedAnimEnd()
     {
         if (IsDead())
         {
             CustomEvent.Trigger(gameObject, "On Death");
             return;
-        }
-        else
-        {
-            CustomEvent.Trigger(gameObject, "On Animation End");
         }
     }
 
@@ -147,5 +149,23 @@ public class EnemyAIBehavior : MonoBehaviour, IDamagable
     public void Death()
     {
         Destroy(gameObject);
+    }
+    #endregion
+
+    public bool TargetInAttackRadius()
+    {
+        Collider2D col = Physics2D.OverlapCircle(attackPoint.position, variables.attackRaidus, attackLayerMask.value);
+
+        if (col == null)
+        {
+            return false;
+        }
+
+        return col.TryGetComponent(out PlayerHP _);
+    }
+
+    public void ApplyDamageToPlayer()
+    {
+        GlobalAI.Instance.Player.GetComponent<PlayerHP>().ApplyDamage(variables.damage);
     }
 }
