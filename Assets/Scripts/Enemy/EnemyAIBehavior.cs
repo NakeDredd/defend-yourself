@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using System;
+using Unity.VisualScripting;
 
-public class EnemyAIBehavior : MonoBehaviour
+public class EnemyAIBehavior : MonoBehaviour, IDamagable
 {
     [SerializeField] private float nextWaypointDistance;
 
@@ -20,6 +21,9 @@ public class EnemyAIBehavior : MonoBehaviour
 
     private int currentWaypoint = 0;
 
+    public int MaxHealth => variables.maxHp;
+
+    public int CurrentHealth { get => variables.currentHp; set => variables.currentHp = value; }
 
     public void InitBehavior()
     {
@@ -38,7 +42,7 @@ public class EnemyAIBehavior : MonoBehaviour
         {
             transform.rotation = Quaternion.Euler(0, 180, 0);
         }
-        else if (rb.velocity.x <= 0.02f)
+        else if (rb.velocity.x <= 0.01f)
         {
             transform.rotation = Quaternion.Euler(0, 0, 0);
         }
@@ -107,4 +111,41 @@ public class EnemyAIBehavior : MonoBehaviour
         rb.AddForce(force);
     }
 
+    public void DamagedAnimEnd()
+    {
+        if (IsDead())
+        {
+            CustomEvent.Trigger(gameObject, "On Death");
+            return;
+        }
+        else
+        {
+            CustomEvent.Trigger(gameObject, "On Animation End");
+        }
+    }
+
+    public void ApplyDamage(int damage)
+    {
+        if (CurrentHealth - damage <= 0)
+        {
+            CurrentHealth = 0;
+            CustomEvent.Trigger(gameObject, "On Death");
+        }
+        else
+        {
+            CurrentHealth -= damage;
+            CustomEvent.Trigger(gameObject, "On Damaged");
+        }
+        
+    }
+
+    public bool IsDead()
+    {
+        return CurrentHealth <= 0;
+    }
+
+    public void Death()
+    {
+        Destroy(gameObject);
+    }
 }

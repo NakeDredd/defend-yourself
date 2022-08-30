@@ -9,10 +9,11 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private int speed;
     [SerializeField] private int jumpForce;
-    [SerializeField] private float characterHeight;
+    [SerializeField] private float groundCheckHeight;
     [SerializeField] private float coyoteTime;
     [SerializeField] private int horizontalSlowForce;
 
+    [SerializeField] private Transform groundCheckPoint;
     [SerializeField] private LayerMask groundCheck;
 
     private Rigidbody2D rb;
@@ -101,7 +102,7 @@ public class PlayerMovement : MonoBehaviour
     
     public bool IsGrounded()
     {
-        bool isGrounded = Physics2D.Raycast(transform.position, Vector2.down, characterHeight, groundCheck.value).collider != null;
+        bool isGrounded = Physics2D.Raycast(groundCheckPoint.position, Vector2.down, groundCheckHeight, groundCheck.value).collider != null;
         //Animtions
         anim.SetBool("isGrounded", isGrounded);
         //Animtions
