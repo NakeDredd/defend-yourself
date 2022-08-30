@@ -32,6 +32,18 @@ public class EnemyAIBehavior : MonoBehaviour
         target = GlobalAI.Instance.Player.transform;
     }
 
+    public void Flip()
+    {
+        if (rb.velocity.x >= 0.01f)
+        {
+            transform.rotation = Quaternion.Euler(0, 180, 0);
+        }
+        else if (rb.velocity.x <= 0.02f)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+    }
+
     public void UpdatePath()
     {
         if (seeker.IsDone())
