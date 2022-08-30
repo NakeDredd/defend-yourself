@@ -85,9 +85,14 @@ public class EnemyAIBehavior : MonoBehaviour
 
     public void MoveToPlayer()
     {
+        if (currentWaypoint >= path.vectorPath.Count)
+        {
+            return;
+        }
         Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
         Vector2 force = direction * variables.speed * Time.fixedDeltaTime;
 
         rb.AddForce(force);
     }
+
 }
