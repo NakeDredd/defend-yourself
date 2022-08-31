@@ -12,6 +12,7 @@ public class EnemyAIBehavior : MonoBehaviour, IDamagable
 
     [SerializeField] private Transform attackPoint;
     [SerializeField] private LayerMask attackLayerMask;
+    [SerializeField] private GameObject collectable;
 
     private Path path;
     private EnemyAIVariables variables;
@@ -150,6 +151,11 @@ public class EnemyAIBehavior : MonoBehaviour, IDamagable
     {
         Destroy(gameObject);
     }
+
+    public void SpawnCollectable()
+    {
+        Instantiate(collectable, transform.localPosition, Quaternion.identity);
+    }
     #endregion
 
     public bool TargetInAttackRadius()
@@ -166,6 +172,11 @@ public class EnemyAIBehavior : MonoBehaviour, IDamagable
 
     public void ApplyDamageToPlayer()
     {
-        GlobalAI.Instance.Player.GetComponent<PlayerHP>().ApplyDamage(variables.damage);
+        Collider2D col = Physics2D.OverlapCircle(attackPoint.position, variables.attackRaidus, attackLayerMask.value);
+
+        if (col.TryGetComponent(out PlayerHP player))
+        {
+            player.ApplyDamage(variables.damage);
+        }
     }
 }

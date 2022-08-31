@@ -23,11 +23,11 @@ public class Generator : MonoBehaviour, IInteractable
 
     private void TurnOn()
     {
-        //buttonKey = Instantiate(key);
+        transform.GetChild(0).gameObject.SetActive(true);
 
         disposable = Observable.EveryUpdate().Subscribe(_ =>
         {
-            if (Input.GetKeyDown(KeyCode.F))
+            if (Input.GetKeyDown(KeyCode.F) && CanInteract())
             {
                 Interact();
             }
@@ -36,9 +36,14 @@ public class Generator : MonoBehaviour, IInteractable
 
     private void TurnOff()
     {
-        //Destroy(buttonKey);
+        transform.GetChild(0).gameObject.SetActive(false);
 
         disposable.Dispose();
+    }
+
+    private bool CanInteract()
+    {
+        return PlayerInventory.Instance.CanTakeItem(Collectable.Type.Energy, 10);
     }
 
     public void Interact()
