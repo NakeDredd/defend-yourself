@@ -14,6 +14,9 @@ public class Timer : MonoBehaviour
 
     private IDisposable disposable;
 
+    public delegate void TimerEvents();
+    public static TimerEvents TimeUp;
+
     private void Start()
     {
         Generator.AddtimeEvent += AddTime;
@@ -42,7 +45,18 @@ public class Timer : MonoBehaviour
         {
             currentTime--;
             UpdateText();
+
+            if (currentTime <= 0)
+            {
+                TimesUp();
+            }
         });
+    }
+
+    private void TimesUp()
+    {
+        disposable.Dispose();
+        TimeUp?.Invoke();
     }
 
     private void AddTime(int secondsToAdd)

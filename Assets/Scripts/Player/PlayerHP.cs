@@ -14,6 +14,9 @@ public class PlayerHP : MonoBehaviour
 
     [SerializeField] private int currentHp;
 
+    public delegate void PlayerHPEvent();
+    public static PlayerHPEvent Death;
+
     public void ApplyDamage(int damage)
     {
         if (currentHp - damage <= 0)
@@ -42,11 +45,4 @@ public class PlayerHP : MonoBehaviour
         hpBar.fillAmount = currPerc;
     }
 
-    private void Death()
-    {
-        Observable.Timer(TimeSpan.FromSeconds(3)).Subscribe(_ => 
-        {
-            Destroy(this.gameObject);
-        });
-    }
 }
