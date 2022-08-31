@@ -291,6 +291,7 @@ MonoBehaviour:
   attackLayerMask:
     serializedVersion: 2
     m_Bits: 128
+  collectable: {fileID: 7753009597955500962, guid: 411605a774db907439c80c552c983c8e, type: 3}
 --- !u!114 &2283238507691780452
 MonoBehaviour:
   m_ObjectHideFlags: 0

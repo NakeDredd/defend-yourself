@@ -25,6 +25,8 @@ public class EnemyAIBehavior : MonoBehaviour, IDamagable
 
     private int currentWaypoint = 0;
 
+    public bool isDamagging = false;
+
     public int MaxHealth => variables.maxHp;
 
     public int CurrentHealth { get => variables.currentHp; set => variables.currentHp = value; }
@@ -154,7 +156,7 @@ public class EnemyAIBehavior : MonoBehaviour, IDamagable
 
     public void SpawnCollectable()
     {
-        Instantiate(collectable, transform.localPosition, Quaternion.identity);
+        Instantiate(collectable, transform.position, Quaternion.identity);
     }
     #endregion
 
