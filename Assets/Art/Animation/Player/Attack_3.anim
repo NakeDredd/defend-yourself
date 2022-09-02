@@ -80,9 +80,9 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.016666668
-    functionName: ApplyDamage
+    functionName: ApplyDamageToEnemy
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 2.5
-    intParameter: 0
+    intParameter: 3
     messageOptions: 0

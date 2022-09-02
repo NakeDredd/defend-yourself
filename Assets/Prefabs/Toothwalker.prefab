@@ -81,7 +81,7 @@ GameObject:
   - component: {fileID: 2283238507691780450}
   - component: {fileID: 2283238507691780452}
   m_Layer: 8
-  m_Name: Enemy
+  m_Name: Toothwalker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

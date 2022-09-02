@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UniRx;
 using UnityEngine;
 
@@ -8,6 +9,8 @@ public class Generator : MonoBehaviour, IInteractable
 {
     [SerializeField] private int secondsToAdd;
     [SerializeField] private GameObject key;
+    [SerializeField] private TextMeshPro costText;
+    [SerializeField] private int energyCost;
 
     private GameObject buttonKey;
 
@@ -24,6 +27,7 @@ public class Generator : MonoBehaviour, IInteractable
     private void TurnOn()
     {
         transform.GetChild(0).gameObject.SetActive(true);
+        costText.text = $"x{energyCost}";
 
         disposable = Observable.EveryUpdate().Subscribe(_ =>
         {
@@ -36,6 +40,8 @@ public class Generator : MonoBehaviour, IInteractable
 
     private void TurnOff()
     {
+        PlayerInventory.Instance.TakeItem(Collectable.Type.Energy, energyCost);
+
         transform.GetChild(0).gameObject.SetActive(false);
 
         disposable.Dispose();
@@ -43,7 +49,7 @@ public class Generator : MonoBehaviour, IInteractable
 
     private bool CanInteract()
     {
-        return PlayerInventory.Instance.CanTakeItem(Collectable.Type.Energy, 10);
+        return PlayerInventory.Instance.CanTakeItem(Collectable.Type.Energy, energyCost);
     }
 
     public void Interact()

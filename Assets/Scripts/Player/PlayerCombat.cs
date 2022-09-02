@@ -7,13 +7,13 @@ using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour
 {
-    [SerializeField] private int damage;
     [SerializeField] private LayerMask attackLayermask;
     [SerializeField] private Transform attackPoint;
 
     private Animator anim;
     private PlayerMovement movement;
     private ComboController comboController;
+    private int damage;
     private bool isCanAttack = true;
     private enum AttackType
     {
@@ -80,7 +80,7 @@ public class PlayerCombat : MonoBehaviour
         OnAttack.Invoke();
     }
 
-    private void ApplyDamage(float attackDistance)
+    public void ApplyDamageToEnemy(float attackDistance)
     {
         RaycastHit2D[] hits = null;
         if (transform.rotation.y == 0)
@@ -95,6 +95,21 @@ public class PlayerCombat : MonoBehaviour
         if (hits == null)
         {
             return;
+        }
+
+        switch (comboController.CountOfAttacks)
+        {
+            case 1:
+                damage = 10;
+                break;
+            case 2:
+                damage = 20;
+                break;
+            case 3:
+                damage = 30;
+                break;
+            default:
+                break;
         }
 
         foreach (var hit in hits)

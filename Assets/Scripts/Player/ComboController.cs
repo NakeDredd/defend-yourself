@@ -13,6 +13,8 @@ public class ComboController : MonoBehaviour
     private int countOfAttacks;
     private float comboTime;
 
+    public int CountOfAttacks { get => countOfAttacks; set => countOfAttacks = value; }
+
     public void PlayAttackAnimation(bool isAir)
     {
         if (isAir)
