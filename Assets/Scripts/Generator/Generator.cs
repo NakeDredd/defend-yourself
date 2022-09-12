@@ -40,7 +40,7 @@ public class Generator : MonoBehaviour, IInteractable
 
     private void TurnOff()
     {
-        PlayerInventory.Instance.TakeItem(Collectable.Type.Energy, energyCost);
+        
 
         transform.GetChild(0).gameObject.SetActive(false);
 
@@ -54,6 +54,7 @@ public class Generator : MonoBehaviour, IInteractable
 
     public void Interact()
     {
+        PlayerInventory.Instance.TakeItem(Collectable.Type.Energy, energyCost);
         AddtimeEvent.Invoke(secondsToAdd);
     }
 

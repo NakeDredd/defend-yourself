@@ -28032,7 +28032,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29a11d21c3f7c2344a75fed27ef39798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  comboTimerGround: 0.6
+  comboTimerGround: 0.8
   comboTimerAir: 0.8
 --- !u!114 &1061098910
 MonoBehaviour:
